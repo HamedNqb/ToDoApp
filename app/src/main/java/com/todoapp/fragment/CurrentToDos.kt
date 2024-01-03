@@ -1,4 +1,4 @@
-package com.todoapp
+package com.todoapp.fragment
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.Navigation
+import com.todoapp.R
 
 
 class CurrentToDos : Fragment() {
@@ -21,7 +22,7 @@ class CurrentToDos : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val textView = view.findViewById<TextView>(R.id.textView)
+        val textView = view.findViewById<TextView>(R.id.titleTextBox)
         textView.setOnClickListener{
             Navigation.findNavController(textView).navigate(R.id.action_currentToDos_to_addTask)
         }
