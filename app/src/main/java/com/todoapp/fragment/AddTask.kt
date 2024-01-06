@@ -5,17 +5,42 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.Navigation
 import com.todoapp.R
+import com.todoapp.databinding.FragmentAddTaskBinding
+import com.todoapp.model.ToDo
+import com.todoapp.utils.Picker
+import com.todoapp.utils.fullDate
+import com.todoapp.utils.hour
+import com.todoapp.utils.minute
 
 
 class AddTask : Fragment() {
-
+    private lateinit var binding: FragmentAddTaskBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_add_task, container, false)
+    ): View {
+        binding = FragmentAddTaskBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.dateTextInput.setOnClickListener {
+            Picker(parentFragmentManager , binding.dateTextInput)
+        }
+        binding.addTaskBTN.setOnClickListener {
+            val newToDo = ToDo(
+                binding.addTitle.editText?.text.toString(),
+                binding.addDescription.editText?.text.toString(),
+                "${hour} : ${minute}",
+                fullDate,
+                isDone = false
+            )
+            toDoList.add(newToDo)
+            Navigation.findNavController(binding.addTaskBTN).navigate(R.id.action_addTask_to_currentToDos)
+        }
+    }
 }
