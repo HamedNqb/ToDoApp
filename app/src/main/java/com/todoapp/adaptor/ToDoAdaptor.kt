@@ -1,19 +1,28 @@
 package com.todoapp.adaptor
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.todoapp.R
+import com.todoapp.fragment.currentToDosBinding
+import com.todoapp.fragment.dataStore
 import com.todoapp.model.ToDo
+import kotlinx.collections.immutable.mutate
+import kotlinx.coroutines.runBlocking
 
-class ToDoAdaptor(var toDoList: MutableList<ToDo>, var context: Context) :
+class ToDoAdaptor(private var toDoList: MutableList<ToDo>, var context: Context) :
     RecyclerView.Adapter<ToDoAdaptor.ViewHolder>() {
+
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var card = itemView.findViewById<CardView>(R.id.card)
         var titleTB = itemView.findViewById<TextView>(R.id.titleTextBox)
@@ -22,7 +31,25 @@ class ToDoAdaptor(var toDoList: MutableList<ToDo>, var context: Context) :
         var timeText = itemView.findViewById<TextView>(R.id.timeText)
         var dateTB = itemView.findViewById<TextView>(R.id.dateTexBox)
         var timeTB = itemView.findViewById<TextView>(R.id.timeTextBox)
-        var isDoneCheckBox = itemView.findViewById<CheckBox>(R.id.isDoneCB)
+        var isDoneCheckBox: CheckBox = itemView.findViewById(R.id.isDoneCB)
+        init {
+            isDoneCheckBox.setOnCheckedChangeListener { button , isSelected ->
+                if (isSelected) {
+                   // Log.d("chi", "ahan ")
+                    runBlocking {
+                        context.dataStore.updateData {
+                            it.copy(
+                                it.toDoList.mutate {
+                                    it.removeAt(adapterPosition)
+                                }
+                            )
+                        }
+                    }
+                    currentToDosBinding.recView.adapter!!.notifyItemChanged(adapterPosition)
+                   // Log.d("chi", "chi: ")
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,5 +70,6 @@ class ToDoAdaptor(var toDoList: MutableList<ToDo>, var context: Context) :
             timeTB.text = toDoList[position].time
             isDoneCheckBox.isChecked = toDoList[position].isDone
         }
+
     }
 }

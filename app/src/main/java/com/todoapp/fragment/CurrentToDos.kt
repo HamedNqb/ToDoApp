@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.todoapp.R
@@ -13,35 +14,46 @@ import com.todoapp.adaptor.ToDoAdaptor
 import com.todoapp.databinding.FragmentAddTaskBinding
 import com.todoapp.databinding.FragmentCurrentToDosBinding
 import com.todoapp.model.ToDo
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
-val toDoList = mutableListOf<ToDo>()
+lateinit var currentToDosBinding: FragmentCurrentToDosBinding
 class CurrentToDos : Fragment() {
-    private lateinit var binding: FragmentCurrentToDosBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCurrentToDosBinding.inflate(inflater, container, false)
-        return binding.root
+        currentToDosBinding = FragmentCurrentToDosBinding.inflate(inflater, container, false)
+        return currentToDosBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       binding.addTaskButton.setOnClickListener{
-           Navigation.findNavController(binding.addTaskButton).navigate(R.id.action_currentToDos_to_addTask)
-       }
-        initRecView()
+        currentToDosBinding.addTaskButton.setOnClickListener {
+            Navigation.findNavController(currentToDosBinding.addTaskButton)
+                .navigate(R.id.action_currentToDos_to_addTask)
+        }
+        lifecycleScope.launch {
+            initRecView()
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
-        initRecView()
+        lifecycleScope.launch {
+            initRecView()
+        }
     }
 
-    private fun initRecView(){
-        val adapter = ToDoAdaptor(toDoList,requireContext())
-        binding.recView.adapter=adapter
-        binding.recView.layoutManager = LinearLayoutManager(requireContext())
+    private suspend fun initRecView() {
+        val adapter = ToDoAdaptor(
+            requireContext().dataStore.data.first().toDoList.toMutableList(),
+            requireContext()
+        )
+        currentToDosBinding.recView.adapter = adapter
+        currentToDosBinding.recView.layoutManager = LinearLayoutManager(requireContext())
 
 
     }

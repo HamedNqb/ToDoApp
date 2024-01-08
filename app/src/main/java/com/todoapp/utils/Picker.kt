@@ -23,23 +23,18 @@ class Picker(private var fragmentManager: FragmentManager, private var editText:
         timePicker.addOnPositiveButtonClickListener {
             hour = timePicker.hour
             minute = timePicker.minute
-            val result = "${fullDate} ,${hour} : ${minute}"
+            val result = "$fullDate ,$hour : $minute"
             editText.setText(result)
-
         }
     }
-
     private fun makeDatePicker() {
         val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build()
         datePicker.show(fragmentManager, "datePickerInAddTask")
         datePicker.addOnPositiveButtonClickListener {
-            val outputDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val outputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             outputDateFormat.timeZone = TimeZone.getTimeZone("UTC")
             fullDate = outputDateFormat.format(it)
             makeTimePicker()
         }
-
     }
-
-
 }
