@@ -22,7 +22,7 @@ class Notifreceiver : BroadcastReceiver() {
         runBlocking {
             val currentTodo =
                 context.dataStore.data.first().toDoList.find { it.hashCode() == currentId?.toInt() }
-            creatNotification(
+            createNotification(
                 context,
                 currentId.toString(),
                 currentTodo!!.title,
@@ -32,7 +32,7 @@ class Notifreceiver : BroadcastReceiver() {
         }
     }
 
-    private fun creatNotification(
+    private fun createNotification(
         context: Context?,
         id: String,
         title: String,

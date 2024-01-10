@@ -45,7 +45,6 @@ class AddTask : Fragment() {
         }
 
         binding.addTaskBTN.setOnClickListener {
-
             val newToDo = ToDo(
                 title = binding.addTitle.text.toString(),
                 description = binding.addDescription.text.toString(),
@@ -62,6 +61,7 @@ class AddTask : Fragment() {
                         }
                     )
                 }
+
                 Notification(
                     requireContext(),
                     newToDo.hashCode().toString(),
@@ -69,12 +69,9 @@ class AddTask : Fragment() {
                     newToDo.title,
                     newToDo.description
                 )
-
                 Navigation.findNavController(binding.addTaskBTN)
                     .navigate(R.id.action_addTask_to_currentToDos)
-
             }
-
         }
     }
 }

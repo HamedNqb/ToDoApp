@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 lateinit var currentToDosBinding: FragmentCurrentToDosBinding
+
 class CurrentToDos : Fragment() {
 
     override fun onCreateView(
@@ -30,14 +31,15 @@ class CurrentToDos : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentToDosBinding.addTaskButton.setOnClickListener {
-            Navigation.findNavController(currentToDosBinding.addTaskButton)
-                .navigate(R.id.action_currentToDos_to_addTask)
-        }
+
         lifecycleScope.launch {
             initRecView()
         }
 
+        currentToDosBinding.addTaskButton.setOnClickListener {
+            Navigation.findNavController(currentToDosBinding.addTaskButton)
+                .navigate(R.id.action_currentToDos_to_addTask)
+        }
     }
 
     override fun onResume() {
@@ -48,13 +50,13 @@ class CurrentToDos : Fragment() {
     }
 
     private suspend fun initRecView() {
+
         val adapter = ToDoAdaptor(
             requireContext().dataStore.data.first().toDoList.toMutableList(),
             requireContext()
         )
         currentToDosBinding.recView.adapter = adapter
         currentToDosBinding.recView.layoutManager = LinearLayoutManager(requireContext())
-
-
+        currentToDosBinding.recView.adapter!!.notifyDataSetChanged()
     }
 }
