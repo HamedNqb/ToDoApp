@@ -10,7 +10,7 @@ import kotlinx.serialization.descriptors.serialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
-class ToDoListListSerializer(val dataKSerializer: KSerializer<ToDo>) :
+class ToDoListListSerializer(private val dataKSerializer: KSerializer<ToDo>) :
     KSerializer<PersistentList<ToDo>> {
     class PersistentListDescriptor : SerialDescriptor by serialDescriptor<List<ToDo>>() {}
 

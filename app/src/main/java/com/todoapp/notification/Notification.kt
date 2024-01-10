@@ -32,9 +32,9 @@ class Notification(
         calender.set(Calendar.MINUTE, (todo.time).split(":")[1].toInt())
         calender.set(Calendar.SECOND, 0)
         calender.set(Calendar.MILLISECOND, 0)
-        calender.set(Calendar.YEAR, (todo.date).split(":")[2].toInt())
-        calender.set(Calendar.MONTH, (todo.date).split(":")[1].toInt()-1)
-        calender.set(Calendar.DAY_OF_YEAR, (todo.date).split(":")[0].toInt())
+        calender.set(Calendar.YEAR, (todo.date).split("/")[2].toInt())
+        calender.set(Calendar.MONTH, (todo.date).split("/")[1].toInt()-1)
+        calender.set(Calendar.DAY_OF_YEAR, (todo.date).split("/")[0].toInt())
         val notifIntent = Intent(context, Notifreceiver::class.java)
         notifIntent.putExtra("id", id)
         val alarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager

@@ -3,10 +3,12 @@ package com.todoapp.fragment
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.datastore.dataStore
 import androidx.lifecycle.lifecycleScope
@@ -41,14 +43,17 @@ class AddTask : Fragment() {
         binding.dateTextInput.setOnClickListener {
             Picker(parentFragmentManager, binding.dateTextInput)
         }
+
         binding.addTaskBTN.setOnClickListener {
+
             val newToDo = ToDo(
-                binding.addTitle.editText?.text.toString(),
-                binding.addDescription.editText?.text.toString(),
-                "$hour : $minute",
-                fullDate,
-                false
+                title = binding.addTitle.text.toString(),
+                description = binding.addDescription.text.toString(),
+                time = "$hour:$minute",
+                date = fullDate,
+                isDone = false
             )
+//Toast.makeText(requireContext(),newToDo.toString(),Toast.LENGTH_LONG).show()
             lifecycleScope.launch {
                 requireContext().dataStore.updateData {
                     it.copy(
@@ -64,6 +69,7 @@ class AddTask : Fragment() {
                     newToDo.title,
                     newToDo.description
                 )
+
                 Navigation.findNavController(binding.addTaskBTN)
                     .navigate(R.id.action_addTask_to_currentToDos)
 

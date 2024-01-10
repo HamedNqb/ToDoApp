@@ -23,10 +23,11 @@ class Picker(private var fragmentManager: FragmentManager, private var editText:
         timePicker.addOnPositiveButtonClickListener {
             hour = timePicker.hour
             minute = timePicker.minute
-            val result = "$fullDate ,$hour : $minute"
+            val result = "$fullDate,$hour:$minute"
             editText.setText(result)
         }
     }
+
     private fun makeDatePicker() {
         val datePicker = MaterialDatePicker.Builder.datePicker().setTitleText("Select Date").build()
         datePicker.show(fragmentManager, "datePickerInAddTask")
