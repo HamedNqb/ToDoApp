@@ -22,8 +22,12 @@ class Notification(
     var description: String
 ) {
     init {
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
         createChannel(name, description)
-        startNotification()
+        startNotification()}
+        else{
+            startNotification()
+        }
     }
     @SuppressLint("ScheduleExactAlarm")
     private fun startNotification() {

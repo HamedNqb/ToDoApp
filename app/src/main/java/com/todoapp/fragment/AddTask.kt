@@ -1,6 +1,7 @@
 package com.todoapp.fragment
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -45,6 +46,13 @@ class AddTask : Fragment() {
         }
 
         binding.addTaskBTN.setOnClickListener {
+         val mediaPlayer = MediaPlayer.create(context, R.raw.type)
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.pause()
+                mediaPlayer.seekTo(0)
+            } else {
+                mediaPlayer.start()
+            }
             val newToDo = ToDo(
                 title = binding.addTitle.text.toString(),
                 description = binding.addDescription.text.toString(),
